@@ -1,9 +1,9 @@
 # Tamburmasxino
 Drum machine project for Free Code Camp
 
-The version in this repository works and passes the tests.
+The [version in this repository](https://zdflower.github.io/tamburmasxino/) works and passes the tests.
 
-Then I made changes (here) [https://codepen.io/zdflower/pen/zaZRrJ] to make the code less repetitive, and still works, but there are tests that fail:
+Then I made changes [here](https://codepen.io/zdflower/pen/zaZRrJ) to make the code less repetitive, and still works, but there are tests that fail:
 
     #Drum Machine tests
 
