@@ -6,16 +6,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var url = "https://s3.amazonaws.com/freecodecamp/drums/";
 var soundFilesNamesAndKeys = {
-  Q: "https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3",
-  W: "https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3",
-  E: "https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3",
-  A: "https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3",
-  S: "https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3",
-  D: "https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3",
-  Z: "https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3",
-  X: "https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3",
-  C: "https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"
+  Q: url + "Heater-1.mp3",
+  W: url + "Kick_n_Hat.mp3",
+  E: url + "Chord_1.mp3",
+  A: url + "Heater-6.mp3",
+  S: url + "punchy_kick_1.mp3",
+  D: url + "Brk_Snr.mp3",
+  Z: url + "Dry_Ohh.mp3",
+  X: url + "Heater-3.mp3",
+  C: url + "Dsc_Oh.mp3"
 };
 
 var App = function (_React$Component) {
@@ -59,39 +60,29 @@ var App = function (_React$Component) {
   }, {
     key: "handleKeyPress",
     value: function handleKeyPress(event) {
-      var currentSound = '';
-      var currentSoundText = '';
-      if (event.key === "q") {
-        currentSound = soundFilesNamesAndKeys.Q;
-        currentSoundText = soundFilesNamesAndKeys.Q;
-      } else if (event.key === "w") {
-        currentSound = soundFilesNamesAndKeys.W;
-        currentSoundText = soundFilesNamesAndKeys.W;
-      } else if (event.key === "e") {
-        currentSound = soundFilesNamesAndKeys.E;
-        currentSoundText = soundFilesNamesAndKeys.E;
-      } else if (event.key === "a") {
-        currentSound = soundFilesNamesAndKeys.A;
-        currentSoundText = soundFilesNamesAndKeys.A;
-      } else if (event.key === "s") {
-        currentSound = soundFilesNamesAndKeys.S;
-        currentSoundText = soundFilesNamesAndKeys.S;
-      } else if (event.key === "d") {
-        currentSound = soundFilesNamesAndKeys.D;
-        currentSoundText = soundFilesNamesAndKeys.D;
-      } else if (event.key === "z") {
-        currentSound = soundFilesNamesAndKeys.Z;
-        currentSoundText = soundFilesNamesAndKeys.Z;
-      } else if (event.key === "x") {
-        currentSound = soundFilesNamesAndKeys.X;
-        currentSoundText = soundFilesNamesAndKeys.X;
-      } else if (event.key === "c") {
-        currentSound = soundFilesNamesAndKeys.C;
-        currentSoundText = soundFilesNamesAndKeys.C;
-      } else {
-        currentSoundText = "That key has no assigned sound.";
-        currentSound = '';
+
+      console.log("EVENT KEY:" + event.key);
+
+      var key = event.key.toUpperCase();
+      var isValidKey = Object.keys(soundFilesNamesAndKeys).includes(key);
+
+      console.log("isValidKey: " + isValidKey);
+
+      var currentSound = isValidKey ? soundFilesNamesAndKeys[key] : '';
+      var currentSoundText = isValidKey ? soundFilesNamesAndKeys[key] : "That key has no assigned sound.";
+
+      /*
+      Another idea:
+      
+      let currentSound = '';
+      let currentSoundText = '';
+      if (isValidKey){
+        currentSound = soundFilesNamesAndKeys[key];
+        currentSoundText = currentSound;
       }
+      
+      */
+
       this.setState({
         currentSound: currentSound,
         currentSoundText: currentSoundText

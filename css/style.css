@@ -2,6 +2,13 @@ body {
     background-color: beige;
 }
 
+h1 {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.8em;
+  text-align: right;
+}
+
 #drum-machine {
   display: flex;
   flex-direction: column;
@@ -20,6 +27,7 @@ body {
   font-size: 1.2em;
   font-family: 'Share Tech Mono', monospace;
   background-color: rgb(25, 100, 70);
+  color: yellow;
 }
 
 .drum-pad {
@@ -29,8 +37,13 @@ body {
   margin: 5px;
   font-size: 2em;
   text-align: center;
+  line-height: 70px;
   justify-self: center;
 }
+
+/* Trick for a single word text: set the line-hight equal to the height of the element.
+https://css-tricks.com/vertically-center-multi-lined-text/
+*/
 
 .drum-pad:hover {
   transform: scale(1.1);
