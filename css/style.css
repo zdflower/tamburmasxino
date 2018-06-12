@@ -1,0 +1,43 @@
+body {
+    background-color: beige;
+}
+
+#drum-machine {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#display {
+  box-shadow: inset 2px 2px 2px 2px black;
+  width: 95%;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+  font-size: 1.2em;
+  font-family: 'Share Tech Mono', monospace;
+  background-color: rgb(25, 100, 70);
+}
+
+.drum-pad {
+  width: 70px;
+  height: 70px;
+  border: 2px solid green;
+  margin: 5px;
+  font-size: 2em;
+  text-align: center;
+  justify-self: center;
+}
+
+.drum-pad:hover {
+  transform: scale(1.1);
+}
+
+#container {
+  display: grid;
+  grid-template-rows: 90px 90px 90px;
+  grid-template-columns: 90px 90px 90px;
+}

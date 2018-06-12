@@ -1,0 +1,136 @@
+const soundFilesNamesAndKeys = {
+  Q : "https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3",
+  W : "https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3",
+  E : "https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3",
+  A : "https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3",
+  S : "https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3", 
+  D : "https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3",
+  Z : "https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3",
+  X : "https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3",
+  C : "https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"
+}
+
+class App extends React.Component {
+  constructor(props){
+    super();
+    this.state = { 
+      currentSoundText: 'Nothing sounds right now',
+      currentSound: ''
+    };
+    this.handleClickPlay = this.handleClickPlay.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.playSound = this.playSound.bind(this);
+  }
+  
+ componentDidMount() {
+   document.addEventListener("keydown", this.handleKeyPress);
+  }
+  
+  componentWillUnmount() {
+document.removeEventListener("keydown", this.handleKeyPress);
+  }
+  
+  playSound(){
+    let audio = new Audio(this.state.currentSound);
+    audio.play();
+  }
+/* Play audio with javascript
+http://stackoverflow.com/questions/9419263/ddg#18628124
+*/
+  
+  handleKeyPress(event){
+    let currentSound = '';
+    let currentSoundText = '';
+    if (event.key === "q") {
+      currentSound = soundFilesNamesAndKeys.Q;
+      currentSoundText = soundFilesNamesAndKeys.Q;
+    } else if (event.key === "w") {
+      currentSound = soundFilesNamesAndKeys.W;
+      currentSoundText = soundFilesNamesAndKeys.W;
+    } else if (event.key === "e") {
+      currentSound = soundFilesNamesAndKeys.E;
+      currentSoundText = soundFilesNamesAndKeys.E;
+    } else if (event.key === "a") {
+      currentSound = soundFilesNamesAndKeys.A;
+      currentSoundText = soundFilesNamesAndKeys.A;
+    } else if (event.key === "s") {
+      currentSound = soundFilesNamesAndKeys.S;
+      currentSoundText = soundFilesNamesAndKeys.S;
+    } else if (event.key === "d") {
+      currentSound = soundFilesNamesAndKeys.D;
+      currentSoundText = soundFilesNamesAndKeys.D;
+    } else if (event.key === "z") {
+      currentSound = soundFilesNamesAndKeys.Z;
+      currentSoundText = soundFilesNamesAndKeys.Z;
+    } else if (event.key === "x") {
+      currentSound = soundFilesNamesAndKeys.X;
+      currentSoundText = soundFilesNamesAndKeys.X;
+    } else if (event.key === "c") {
+      currentSound = soundFilesNamesAndKeys.C;
+      currentSoundText = soundFilesNamesAndKeys.C;
+    } else {
+      currentSoundText = "That key has no assigned sound.";
+      currentSound = '';
+    }
+    this.setState(
+      {
+        currentSound: currentSound,
+        currentSoundText: currentSoundText
+      }
+    );
+  }
+      
+  handleClickPlay(event){
+    /* click event handler */
+    const drumPadChildren = event.target.children;
+    const source = drumPadChildren[0].getAttribute("src");
+    // let text = `${source}`
+    //console.log(source);
+    this.setState({
+      currentSoundText: source,
+      currentSound: source
+    });
+  }
+  
+  render() {
+    return (
+      <div id="drum-machine">
+        <Display currentSoundText={this.state.currentSoundText}/>
+   <div id="container">
+        {
+            Object.keys(soundFilesNamesAndKeys).map((key) => {
+              return (
+                <DrumPad
+                  name={key} 
+                  soundFile={soundFilesNamesAndKeys[key]}
+                  clickplayer={this.handleClickPlay}
+                  key={key}
+                />
+              )
+            })
+        }
+        </div>
+        {(this.state.currentSound)? this.playSound() : ''}
+      </div>
+    );
+  }
+}
+
+function Display(props){
+    return (
+    <div id="display">
+      {props.currentSoundText}
+    </div>
+  )
+}
+
+function DrumPad(props) {
+  return (
+    <div className="drum-pad" id={props.soundFile} onClick={props.clickplayer}>
+      {props.name}
+      <audio className="clip" id={props.name} src={props.soundFile} type="audio/mp3" ></audio>
+    </div>
+  )
+}
+
+ReactDOM.render(<App />, document.getElementById("app"));
