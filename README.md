@@ -1,6 +1,15 @@
 # Tamburmasxino
 Drum machine project for Free Code Camp
 
+The code in this branch (**lessRepetition**) and [here](https://codepen.io/zdflower/pen/zaZRrJ) now works and passes the tests.
+
+Thanks to the extremely useful observations from @oliverdudman at FreeCodeCamp Forum I could make progress and understand the problem.
+
+The test uses a keyboard event which has an undefined key property. So, I used keyCodes, although it is a deprecated property. 
+
+Here: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode says that *keyCode* is deprecated and to avoid using it. And here: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent it is recommended to use *key* instead.
+
+## Previously
 The [version in this repository](https://zdflower.github.io/tamburmasxino/) works and passes the tests.
 
 Then I made changes [here](https://codepen.io/zdflower/pen/zaZRrJ) to make the code less repetitive, and still works, but there are tests that fail:
