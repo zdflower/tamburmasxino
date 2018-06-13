@@ -6,17 +6,29 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var url = "https://s3.amazonaws.com/freecodecamp/drums/";
-var soundFilesNamesAndKeys = {
-  Q: url + "Heater-1.mp3",
-  W: url + "Kick_n_Hat.mp3",
-  E: url + "Chord_1.mp3",
-  A: url + "Heater-6.mp3",
-  S: url + "punchy_kick_1.mp3",
-  D: url + "Brk_Snr.mp3",
-  Z: url + "Dry_Ohh.mp3",
-  X: url + "Heater-3.mp3",
-  C: url + "Dsc_Oh.mp3"
+var URL = "https://s3.amazonaws.com/freecodecamp/drums/";
+var SOUNDFILE_NAMES_AND_KEYS = {
+  Q: "Heater-1",
+  W: "Kick_n_Hat",
+  E: "Chord_1",
+  A: "Heater-6",
+  S: "punchy_kick_1",
+  D: "Brk_Snr",
+  Z: "Dry_Ohh",
+  X: "Heater-3",
+  C: "Dsc_Oh"
+
+  // This is to pass the last test.
+};var KEYCODES = {
+  81: 'Q',
+  87: 'W',
+  69: 'E',
+  65: 'A',
+  83: 'S',
+  68: 'D',
+  90: 'Z',
+  88: 'X',
+  67: 'C'
 };
 
 var App = function (_React$Component) {
@@ -29,7 +41,7 @@ var App = function (_React$Component) {
 
     _this.state = {
       currentSoundText: 'Nothing sounds right now',
-      currentSound: ''
+      currentSoundId: ''
     };
     _this.handleClickPlay = _this.handleClickPlay.bind(_this);
     _this.handleKeyPress = _this.handleKeyPress.bind(_this);
@@ -50,55 +62,54 @@ var App = function (_React$Component) {
   }, {
     key: "playSound",
     value: function playSound() {
-      var audio = new Audio(this.state.currentSound);
-      audio.play();
+      document.getElementById(this.state.currentSoundId).play();
     }
+
     /* Play audio with javascript
     http://stackoverflow.com/questions/9419263/ddg#18628124
+    
+    The Joy of HTML5 Audio: Tips & Tricks for Easy Sound Embedding
+    https://www.elated.com/articles/html5-audio/
     */
 
   }, {
     key: "handleKeyPress",
     value: function handleKeyPress(event) {
 
-      console.log("EVENT KEY:" + event.key);
+      // const key = event.key.toUpperCase();
 
-      var key = event.key.toUpperCase();
-      var isValidKey = Object.keys(soundFilesNamesAndKeys).includes(key);
-
-      console.log("isValidKey: " + isValidKey);
-
-      var currentSound = isValidKey ? soundFilesNamesAndKeys[key] : '';
-      var currentSoundText = isValidKey ? soundFilesNamesAndKeys[key] : "That key has no assigned sound.";
-
-      /*
-      Another idea:
-      
-      let currentSound = '';
-      let currentSoundText = '';
-      if (isValidKey){
-        currentSound = soundFilesNamesAndKeys[key];
-        currentSoundText = currentSound;
-      }
-      
+      var key = KEYCODES[event.keyCode]; // this is to pass the last test.
+      /* 
+      Here: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode 
+      says that *keyCode* is deprecated and to avoid using it. 
+      And here: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+      it is recommended to use *key* instead.
       */
 
+      var isValidKey = Object.keys(SOUNDFILE_NAMES_AND_KEYS).includes(key);
+
+      var currentSoundText = "That key has no assigned sound.";
+      var currentSoundId = '';
+
+      if (isValidKey) {
+        currentSoundText = "Now you are hearing " + SOUNDFILE_NAMES_AND_KEYS[key];
+        currentSoundId = key;
+      }
+
       this.setState({
-        currentSound: currentSound,
-        currentSoundText: currentSoundText
+        currentSoundText: currentSoundText,
+        currentSoundId: currentSoundId
       });
     }
   }, {
     key: "handleClickPlay",
     value: function handleClickPlay(event) {
-      /* click event handler */
-      var drumPadChildren = event.target.children;
-      var source = drumPadChildren[0].getAttribute("src");
-      // let text = `${source}`
-      //console.log(source);
+
+      var key = event.target.children[0].id;
+
       this.setState({
-        currentSoundText: source,
-        currentSound: source
+        currentSoundText: "Now you are hearing " + SOUNDFILE_NAMES_AND_KEYS[key],
+        currentSoundId: key
       });
     }
   }, {
@@ -113,16 +124,16 @@ var App = function (_React$Component) {
         React.createElement(
           "div",
           { id: "container" },
-          Object.keys(soundFilesNamesAndKeys).map(function (key) {
+          Object.keys(SOUNDFILE_NAMES_AND_KEYS).map(function (key) {
             return React.createElement(DrumPad, {
               name: key,
-              soundFile: soundFilesNamesAndKeys[key],
+              soundFile: URL + SOUNDFILE_NAMES_AND_KEYS[key] + ".mp3",
               clickplayer: _this2.handleClickPlay,
               key: key
             });
           })
         ),
-        this.state.currentSound ? this.playSound() : ''
+        this.state.currentSoundId ? this.playSound() : ''
       );
     }
   }]);

@@ -1,22 +1,35 @@
-const url = "https://s3.amazonaws.com/freecodecamp/drums/";
-const soundFilesNamesAndKeys = {
-  Q : url + "Heater-1.mp3",
-  W : url + "Kick_n_Hat.mp3",
-  E : url + "Chord_1.mp3",
-  A : url + "Heater-6.mp3",
-  S : url + "punchy_kick_1.mp3", 
-  D : url + "Brk_Snr.mp3",
-  Z : url + "Dry_Ohh.mp3",
-  X : url + "Heater-3.mp3",
-  C : url + "Dsc_Oh.mp3"
+const URL = "https://s3.amazonaws.com/freecodecamp/drums/";
+const SOUNDFILE_NAMES_AND_KEYS = {
+  Q : "Heater-1",
+  W : "Kick_n_Hat",
+  E : "Chord_1",
+  A : "Heater-6",
+  S : "punchy_kick_1", 
+  D : "Brk_Snr",
+  Z : "Dry_Ohh",
+  X : "Heater-3",
+  C : "Dsc_Oh"
 }
+
+// This is to pass the last test.
+const KEYCODES = {
+  81 : 'Q',
+  87 : 'W',
+  69 : 'E',
+  65 : 'A',
+  83 : 'S',
+  68 : 'D',
+  90 : 'Z',
+  88 : 'X',
+  67 : 'C'
+};
 
 class App extends React.Component {
   constructor(props){
     super();
     this.state = { 
       currentSoundText: 'Nothing sounds right now',
-      currentSound: ''
+      currentSoundId: ''
     };
     this.handleClickPlay = this.handleClickPlay.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -32,54 +45,53 @@ document.removeEventListener("keydown", this.handleKeyPress);
   }
   
   playSound(){
-    const audio = new Audio(this.state.currentSound);
-    audio.play();
+    document.getElementById(this.state.currentSoundId).play();
   }
+
 /* Play audio with javascript
 http://stackoverflow.com/questions/9419263/ddg#18628124
+
+The Joy of HTML5 Audio: Tips & Tricks for Easy Sound Embedding
+https://www.elated.com/articles/html5-audio/
 */
   
   handleKeyPress(event){
     
-    console.log("EVENT KEY:" + event.key);
+    // const key = event.key.toUpperCase();
     
-    const key = event.key.toUpperCase();
-    const isValidKey = Object.keys(soundFilesNamesAndKeys).includes(key);
-    
-    console.log("isValidKey: " + isValidKey);
-    
-    const currentSound = (isValidKey)? soundFilesNamesAndKeys[key] : '';
-    const currentSoundText = ((isValidKey))? soundFilesNamesAndKeys[key] : "That key has no assigned sound.";
-    
-    /*
-    Another idea:
-    
-    let currentSound = '';
-    let currentSoundText = '';
-    if (isValidKey){
-      currentSound = soundFilesNamesAndKeys[key];
-      currentSoundText = currentSound;
-    }
-    
+    const key = KEYCODES[event.keyCode]; // this is to pass the last test.
+    /* 
+    Here: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode 
+    says that *keyCode* is deprecated and to avoid using it. 
+    And here: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+    it is recommended to use *key* instead.
     */
     
+    const isValidKey = Object.keys(SOUNDFILE_NAMES_AND_KEYS).includes(key);
+    
+    let currentSoundText = "That key has no assigned sound.";
+    let currentSoundId = '';
+    
+    if (isValidKey){
+      currentSoundText = `Now you are hearing ${SOUNDFILE_NAMES_AND_KEYS[key]}`;
+      currentSoundId = key; 
+    }
+        
     this.setState(
       {
-        currentSound: currentSound,
-        currentSoundText: currentSoundText
+        currentSoundText: currentSoundText,
+        currentSoundId: currentSoundId
       }
     );
   }
       
   handleClickPlay(event){
-    /* click event handler */
-    const drumPadChildren = event.target.children;
-    const source = drumPadChildren[0].getAttribute("src");
-    // let text = `${source}`
-    //console.log(source);
+    
+    const key = event.target.children[0].id;
+        
     this.setState({
-      currentSoundText: source,
-      currentSound: source
+      currentSoundText: `Now you are hearing ${SOUNDFILE_NAMES_AND_KEYS[key]}`,
+      currentSoundId: key
     });
   }
   
@@ -89,11 +101,11 @@ http://stackoverflow.com/questions/9419263/ddg#18628124
         <Display currentSoundText={this.state.currentSoundText}/>
    <div id="container">
         {
-            Object.keys(soundFilesNamesAndKeys).map((key) => {
+            Object.keys(SOUNDFILE_NAMES_AND_KEYS).map((key) => {
               return (
                 <DrumPad
                   name={key} 
-                  soundFile={soundFilesNamesAndKeys[key]}
+                  soundFile={URL + SOUNDFILE_NAMES_AND_KEYS[key] + ".mp3"}
                   clickplayer={this.handleClickPlay}
                   key={key}
                 />
@@ -101,7 +113,7 @@ http://stackoverflow.com/questions/9419263/ddg#18628124
             })
         }
         </div>
-        {(this.state.currentSound)? this.playSound() : ''}
+        {(this.state.currentSoundId)? this.playSound() : ''}
       </div>
     );
   }
