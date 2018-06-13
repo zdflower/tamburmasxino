@@ -3,7 +3,7 @@ Drum machine project for Free Code Camp
 
 The code in this branch (**lessRepetition**) and [here](https://codepen.io/zdflower/pen/zaZRrJ) now works and passes the tests.
 
-Thanks to the extremely useful observations from @oliverdudman at FreeCodeCamp Forum I could make progress and understand the problem.
+Thanks to the extremely useful observations from [@oliverdudman at FreeCodeCamp Forum](https://forum.freecodecamp.org/t/please-help-react-drum-machine-play-sound-with-click-event/199383/5) I could make progress and understand the problem.
 
 The test uses a keyboard event which has an undefined key property. So, I used keyCodes, although it is a deprecated property. 
 
